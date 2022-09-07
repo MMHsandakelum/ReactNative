@@ -14,11 +14,16 @@ import Task from "./components/Task";
 export default function App() {
   const [task, setTask] = useState();
   const [taskItems, setTaskItems] = useState([]);
-
+  Keyboard.dismiss();
   const handleAddTask = () => {
-    Keyboard.dismiss();
     setTaskItems([...taskItems, task]);
     setTask(null);
+  };
+
+  const completeTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy);
   };
   return (
     <View style={styles.container}>
@@ -27,10 +32,12 @@ export default function App() {
         <Text style={styles.title}>My First ReactNative application</Text>
         <View style={styles.items}>
           {taskItems.map((item, index) => {
-            return <Task key={index} text={item} />;
+            return (
+              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+                <Task text={item} />
+              </TouchableOpacity>
+            );
           })}
-          <Task text={"Task 1"} />
-          <Task text={"Task 2"} />
         </View>
       </View>
 
